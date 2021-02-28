@@ -6,7 +6,7 @@ OUTPUT		:= bin/main.hex
 BIN			:= bin/main.bin
 
 compile:
-	@avr-gcc -Wall -g -Os -mmcu=atmega328p -o $(BIN) main.cpp
+	@avr-gcc -Wall -g -Os -mmcu=atmega328p -o $(BIN) main.cpp wordclock.cpp -I include
 	@avr-objcopy -j .text -j .data -O ihex $(BIN) $(OUTPUT)
 
 flash:
