@@ -3,30 +3,52 @@
 namespace Wordclock {
     Wordclock::Wordclock() {
     DDRB |= 0B111111;
+    DDRC |= 0B111111;
 
-        while(1) {
-            this->shiftOut(0b11111111);
+        while(true) {
+            this->shiftOut(0, 1, 2, true, 0b11111111);
             _delay_ms(1000);
             
-            this->shiftOut(0b00000000);
+            this->shiftOut(0, 1, 2, true, 0b00000000);
             _delay_ms(1000);
         }
     }
 
-    void Wordclock::shiftOut(uint8_t value) {
-        PORTB = ~(0b1 << LATCH) & PORTB;
+    void Wordclock::shiftOut(int data, int latch, int clock, bool test, uint8_t value) {
+        if (test) {
+            PORTB &= ~(0b1 << latch);
+        } else {
+            PORTC &= ~(0b1 << latch);
+        }
 
         for (int i = 0; i < 8; i++)  {
             if (value & (1 << (7 - i))) {
-                PORTB |= (0b1 << DATA);
+                if (test) {
+                    PORTB |= (0b1 << data);
+                } else {
+                    PORTC |= (0b1 << data);
+                }
             } else {
-                PORTB &= ~(0b1 << DATA);
+                if (test) {
+                    PORTB &= ~(0b1 << data);
+                } else {
+                    PORTC &= ~(0b1 << data);
+                }
             }
 
-            PORTB = (0b1 << CLOCK) | PORTB;
-            PORTB = ~(0b1 << CLOCK) & PORTB;
+            if (test) {
+                PORTB |= (0b1 << clock);
+                PORTB &= ~(0b1 << clock);
+            } else {
+                PORTC |= (0b1 << clock);
+                PORTC &= ~(0b1 << clock);
+            }
         }
 
-        PORTB = (0b1 << LATCH) | PORTB;
+        if (test) {
+            PORTB = (0b1 << latch) | PORTB;
+        } else {
+            PORTC = (0b1 << latch) | PORTC;
+        }
     }
 }

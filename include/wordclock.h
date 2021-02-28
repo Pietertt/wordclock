@@ -7,8 +7,8 @@ namespace Wordclock {
             Wordclock();
 
         private:
-            void shiftOut(uint8_t value);
+            void shiftOut(int data, int latch, int clock, bool test, uint8_t value);
 
-            
+
     };
 }
