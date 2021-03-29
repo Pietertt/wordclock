@@ -10,5 +10,17 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "time.h"
 #include "wordclock.h"
 #include "register.h"
+
+enum REGA {
+    HET,
+    IS,
+    VIJF
+};
+
+enum REGAB {
+    TIEN,
+    KWART
+}

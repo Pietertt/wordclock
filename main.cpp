@@ -2,7 +2,12 @@
 
 int main (void) {
 
-    Wordclock::Wordclock clock;
+    Wordclock::Time* time = new Wordclock::Time();
+
+    Wordclock::Wordclock* clock = new Wordclock::Wordclock();
+    clock->setup();
+
+    //int a = time->getMinutes();
 
     return 0;
 }

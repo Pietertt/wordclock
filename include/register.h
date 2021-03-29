@@ -23,5 +23,8 @@ namespace Wordclock {
             int dataPin;
 
             volatile uint8_t* reg;
+
+        protected:
+        
     };
 }

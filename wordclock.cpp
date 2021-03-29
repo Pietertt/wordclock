@@ -10,28 +10,38 @@ void operator delete(void* obj) {
 
 namespace Wordclock {
     Wordclock::Wordclock() {
+        this->time = new Time();
+    }
 
+    void Wordclock::setup() {
         DDRB |= 0B111111;
+        DDRC |= 0B111111;
         DDRD |= 0B11111111;
 
-        Register* a = new Register(0, 1, 2, &PORTB);
-        Register* b = new Register(3, 4, 5, &PORTB);
-        Register* c = new Register(2, 3, 4, &PORTD);
-        Register* d = new Register(5, 6, 7, &PORTD);
+        Register* a = new Register(4, 3, 2, &PORTD);
+        Register* b = new Register(7, 6, 5, &PORTD);
+        Register* c = new Register(2, 1, 0, &PORTB);
+        Register* d = new Register(5, 4, 3, &PORTB);
+        Register* e = new Register(2, 1, 0, &PORTC);
+        Register* f = new Register(5, 4, 3, &PORTC);
 
-        while(true) {
-            this->shiftOut(a, 0b11111111);
-            this->shiftOut(b, 0b11111111);
-            this->shiftOut(c, 0b11111111);
-            this->shiftOut(d, 0b11111111);
-            _delay_ms(1000);
+        this->A = 0b00000000;
+        this->B = 0b00000000;
+        this->C = 0b00000000;
+        this->D = 0b00000000;
+        this->E = 0b00000000;
+        this->F = 0b00000000;
 
-            this->shiftOut(a, 0b00000000);
-            this->shiftOut(b, 0b00000000);
-            this->shiftOut(c, 0b00000000);
-            this->shiftOut(d, 0b00000000);
-            _delay_ms(1000);
-        }
+        this->shiftOut(a, this->A);
+        this->shiftOut(b, this->B);
+        this->shiftOut(c, this->C);
+        this->shiftOut(d, this->D);
+        this->shiftOut(e, this->E);
+        this->shiftOut(f, this->F);
+
+        this->timeToWords();
+
+        this->shiftOut(a, this->A);
     }
 
     void Wordclock::shiftOut(Register* reg, byte value) {
@@ -51,34 +61,41 @@ namespace Wordclock {
         *reg->getRegister() |= (0b1 << reg->getLatchPin());
     }
 
-    const char* Wordclock::timeToWords(int hours, int minutes) {
-        char time[20];
+    void Wordclock::timeToWords() {
+        // int minutes = this->time->getMinutes();
+        // int hours = this->time->getHours();
 
-        if (minutes == 0) {
-            strcpy(time, itoa(hours, time, 10));
-            return strcpy(time, " o' clock"); 
-        }
+        this->A |= 0b1 << TIEN;
 
-        if (minutes == 15) {
-            return strcpy(time, "quarter past");
-        }
+        // if (minutes == 0) {
 
-        if (minutes == 30) {
-            return strcpy(time, "half past");
-        }
+        // }
 
-        if (minutes == 45) {
-            return strcpy(time, "quarter to");
-        }
+        // if (minutes == 0) {
+        //     strcpy(time, itoa(hours, time, 10));
+        //     return strcpy(time, " o' clock"); 
+        // }
 
-        if (minutes <= 30) {
-            return strcpy(time, "minutes past ");
-        }
+        // if (minutes == 15) {
+        //     return strcpy(time, "quarter past");
+        // }
 
-        if (minutes > 30) {
-            return strcpy(time, "minutes to");
-        }
+        // if (minutes == 30) {
+        //     return strcpy(time, "half past");
+        // }
 
-        return "";
+        // if (minutes == 45) {
+        //     return strcpy(time, "quarter to");
+        // }
+
+        // if (minutes <= 30) {
+        //     return strcpy(time, "minutes past ");
+        // }
+
+        // if (minutes > 30) {
+        //     return strcpy(time, "minutes to");
+        // }
+
+        // return "";
     }
 }

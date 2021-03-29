@@ -1,12 +1,12 @@
 NAME		:= main.ccp
 DEVICE		:= atmega328p
-PORT		:= /dev/cu.usbmodemFD121
+PORT		:= /dev/cu.usbmodemFA131
 BAUD		:= 115200
 OUTPUT		:= bin/main.hex
 BIN			:= bin/main.bin
 
 compile:
-	@avr-gcc -Wall -g -Os -mmcu=atmega328p -o $(BIN) main.cpp wordclock.cpp register.cpp -I include
+	@avr-gcc -Wall -g -Os -mmcu=atmega328p -o $(BIN) main.cpp wordclock.cpp register.cpp time.cpp -I include
 	@avr-objcopy -j .text -j .data -O ihex $(BIN) $(OUTPUT)
 
 flash:

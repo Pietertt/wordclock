@@ -3,31 +3,28 @@
 namespace Wordclock {
     
     class Register;
+    class Time;
 
     class Wordclock {
 
         public: 
             Wordclock();
+            void setup();
 
         private:
             void shiftOut(Register* reg, byte value);
-            const char* timeToWords(int hours, int minutes);
+            void timeToWords();
 
-            enum NUMBERS {
-                ONE,
-                TWO,
-                THREE,
-                FOUR,
-                FIVE,
-                SIX,
-                SEVEN,
-                EIGHT,
-                NINE,
-                TEN,
-                ELEVEN,
-                TWELVE,
-            };
+            Time* time;
 
+            byte A;
+            byte B;
+            byte C;
+            byte D;
+            byte E;
+            byte F;
+
+        protected:
 
     };
 }
