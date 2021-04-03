@@ -13,16 +13,20 @@ namespace Wordclock {
 
         private:
             void shiftOut(Register* reg, byte value);
-            void timeToWords();
+            void doubleShiftOut(Register* a, Register* b, byte value);
+
+            void blink();
+            void loop();
 
             Time* time;
 
-            byte A;
-            byte B;
-            byte C;
-            byte D;
-            byte E;
-            byte F;
+            Register* a;
+            Register* b;
+            Register* c;
+            Register* d;
+            Register* e;
+            Register* f;
+            Register* g;
 
         protected:
 

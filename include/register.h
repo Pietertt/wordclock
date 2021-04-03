@@ -14,8 +14,20 @@ namespace Wordclock {
             int getLatchPin();
             int getDataPin();
 
+            byte getData();
+            void setData(bool data, int position);
+            void setData(byte data);
+
             void setRegister(volatile uint8_t* reg);
             volatile uint8_t* getRegister();
+
+            void shiftOut(byte value);
+            void doubleShiftOut(Register* a, byte value);
+
+            void increment();
+            void doubleIncrement(Register* a);
+            void loop();
+            void doubleLoop(Register* reg);
 
         private:
             int clockPin;
@@ -23,6 +35,7 @@ namespace Wordclock {
             int dataPin;
 
             volatile uint8_t* reg;
+            byte data;
 
         protected:
         
