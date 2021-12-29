@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "word.h"
 #include "time.h"
 #include "wordclock.h"
 #include "register.h"

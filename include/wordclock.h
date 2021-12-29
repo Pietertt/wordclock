@@ -4,6 +4,7 @@ namespace Wordclock {
     
     class Register;
     class Time;
+    class Word;
 
     class Wordclock {
 
@@ -27,6 +28,8 @@ namespace Wordclock {
             Register* e;
             Register* f;
             Register* g;
+
+            Word* words[10];
 
         protected:
 

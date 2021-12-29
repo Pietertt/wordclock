@@ -110,7 +110,8 @@ namespace Wordclock {
         for (int i = 0; i < 8; i++) {
             this->shiftOut(this->data);
             this->increment();
-            _delay_ms(100);
+            _delay_ms(200);
+
         }
 
         this->setData(0b00000000);
@@ -122,8 +123,9 @@ namespace Wordclock {
 
         for (int i = 0; i < 8; i++) {
             this->doubleShiftOut(reg, reg->getData());
+            _delay_ms(10);
             this->doubleIncrement(reg);
-            _delay_ms(100);
+            _delay_ms(10);
         }
 
         this->doubleShiftOut(reg, reg->getData());
