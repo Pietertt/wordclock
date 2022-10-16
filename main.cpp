@@ -9,5 +9,11 @@ int main (void) {
 
     //int a = time->getMinutes();
 
+    while (true) {
+        clock->decide_time(time);
+        time->tick();
+        _delay_ms(1000);
+    }
+
     return 0;
 }

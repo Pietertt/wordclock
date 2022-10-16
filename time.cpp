@@ -7,16 +7,49 @@ namespace Wordclock {
     }
 
     int Time::getMinutes() {
-        return 20;
+        return this->minutes;
     }
 
-    int Time::getHours() {
-        return 11;
+    int Time::getSeconds() {
+        return this->seconds;
     }
 
-    void Time::timeToData(int minutes, int hours) {
-             
-
+    void Time::setSeconds(int seconds) {
+        this->seconds = seconds;
     }
 
+    void Time::setMinutes(int minutes) {
+        this->minutes = minutes;
+    }
+
+    int Time::getHour() {
+        return this->hour;
+    }
+
+    void Time::setHour(int hour) {
+        this->hour = hour;
+    }
+
+    void Time::tick() {
+        // this->counter += 10;
+
+        // if (this->counter >= 1000) {
+            this->setSeconds(this->getSeconds() + 1);
+            // this->counter = 0;
+        // }
+
+        if (this->getHour() == 24) {
+            this->setHour(0);
+        }
+
+        if (this->getMinutes() == 60) {
+            this->setHour(this->getHour() + 1);
+            this->setMinutes(0);
+        }
+
+        if (this->getSeconds() == 60) {
+            this->setMinutes(this->getMinutes() + 1);
+            this->setSeconds(0);
+        }
+    }
 }
