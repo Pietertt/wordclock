@@ -4,6 +4,8 @@
         "string_view": "cpp",
         "iterator": "cpp",
         "string": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "type_traits": "cpp",
+        "cstddef": "cpp"
     }
 }

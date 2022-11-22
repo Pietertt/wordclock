@@ -31,12 +31,7 @@ namespace Wordclock {
     }
 
     void Time::tick() {
-        // this->counter += 10;
-
-        // if (this->counter >= 1000) {
-            this->setSeconds(this->getSeconds() + 1);
-            // this->counter = 0;
-        // }
+        this->setSeconds(this->getSeconds() + 1);
 
         if (this->getHour() == 24) {
             this->setHour(0);

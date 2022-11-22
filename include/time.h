@@ -14,11 +14,11 @@ namespace Wordclock {
             void setHour(int hour);
             void tick();
 
-            int counter = 10;
         private:
             int seconds = 0;
-            int minutes = 12;
+            int minutes = 14;
             int hour = 14;
+
         protected:
 
     };

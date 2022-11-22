@@ -13,3 +13,6 @@
 #include "time.h"
 #include "wordclock.h"
 #include "register.h"
+#include "singleregister.h"
+#include "doubleregister.h"
+#include "word.h"
