@@ -42,12 +42,12 @@ namespace Wordclock {
         this->KWART = new Word(this, this->b, 3);
         this->OVER = new Word(this, this->d, 6);
         this->VOOR = new Word(this, this->b, 4);
-        this->ELF = new Word(this, this->d, 5);
-        this->HALF = new Word(this, this->b, 5);
-        this->TWEEDE_VIJF = new Word(this, this->c, 2);        
-        this->TWEE = new Word(this, this->d, 4);
-        this->EEN = new Word(this, this->d, 2);
-        this->VIER = new Word(this, this->d, 3);
+        this->ELF = new Word(this, this->b, 5);
+        this->HALF = new Word(this, this->d, 5);
+        this->TWEEDE_VIJF = new Word(this, this->d, 4);
+        this->TWEE = new Word(this, this->c, 2);
+        this->EEN = new Word(this, this->d, 3);
+        this->VIER = new Word(this, this->d, 2);
         this->TWAALF = new Word(this, this->c, 4);
         this->TWEEDE_TIEN = new Word(this, this->b, 6);
         this->DRIE = new Word(this, this->c, 5);
@@ -81,37 +81,23 @@ namespace Wordclock {
     }
 
     void Wordclock::test() {
-        this->HET->test();
-        this->IS->test();
-        this->VIJF->test();
-        this->TIEN->test();
-        this->KWART->test();
-        this->OVER->test();
-        this->VOOR->test();
-        this->ELF->test();
-        this->HALF->test();
-        this->TWEEDE_VIJF->test();      
-        this->TWEE->test();
-        this->EEN->test();
-        this->VIER->test();
-        this->TWAALF->test();
-        this->TWEEDE_TIEN->test();
-        this->DRIE->test();
-        this->NEGEN->test();
-        this->ACHT->test();
-        this->ZES->test();
-        this->ZEVEN->test();
-        this->UUR->test();
+        for (int i = 0; i < AMOUNT_OF_WORDS; i++) {
+            this->words[i]->test();
+        }
+
+        for (int i = 0; i < 5; i++) {
+            this->blink();
+        }
     }
 
     void Wordclock::allOn() {
-        for(int i = 0; i < sizeof(this->words) / sizeof(class Word); i++) {
+        for (int i = 0; i < AMOUNT_OF_WORDS; i++) {
             this->words[i]->on();
         }
     }
 
     void Wordclock::allOff() {
-        for(int i = 0; i < sizeof(this->words) / sizeof(class Word); i++) {
+        for (int i = 0; i < AMOUNT_OF_WORDS; i++) {
             this->words[i]->off();
         }
     }
@@ -140,7 +126,7 @@ namespace Wordclock {
         this->UUR->on();
 
         this->commit();
-        _delay_ms(1000);
+        _delay_ms(200);
 
         this->HET->off();
         this->IS->off();
@@ -165,12 +151,16 @@ namespace Wordclock {
         this->UUR->off();
 
         this->commit();
-        _delay_ms(1000);
+        _delay_ms(200);
     }
 
     void Wordclock::decide_time(Time* time) {
         int minutes = time->getMinutes();
         int hour = time->getHour();
+
+        if (minutes >= 18) {
+            hour++;
+        }
 
         this->HET->on();
         this->IS->on();
@@ -196,6 +186,7 @@ namespace Wordclock {
             case 23 ... 27:
                 this->VIJF->on();
                 this->VOOR->on();
+                this->HALF->on();
                 break;
             case 28 ... 32:
                 this->HALF->on();
@@ -203,6 +194,7 @@ namespace Wordclock {
             case 33 ... 37:
                 this->VIJF->on();
                 this->OVER->on();
+                this->HALF->on();
                 break;
             case 38 ... 42:
                 this->TIEN->on();
@@ -220,6 +212,9 @@ namespace Wordclock {
             case 53 ... 57:
                 this->VIJF->on();
                 this->VOOR->on();
+                break;
+            default:
+                this->UUR->on();
                 break;
         }
 
@@ -267,6 +262,7 @@ namespace Wordclock {
             case 23:
                 this->ELF->on();
                 break;
+            case 0:
             case 12:
             case 24:
                 this->TWAALF->on();

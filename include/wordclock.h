@@ -46,8 +46,8 @@ namespace Wordclock {
             Word* ZES;
             Word* ZEVEN;
             Word* UUR;
-
-            Word* words[21];
+            
+            Word* words[AMOUNT_OF_WORDS];
 
         protected:
 

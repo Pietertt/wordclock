@@ -16,8 +16,8 @@ namespace Wordclock {
 
         private:
             int seconds = 0;
-            int minutes = 14;
-            int hour = 14;
+            int minutes = 0;
+            int hour = 0;
 
         protected:
 

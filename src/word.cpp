@@ -23,10 +23,10 @@ namespace Wordclock {
     void Word::test() {
         this->on();
         this->getRegister()->shiftOut();
-        _delay_ms(50);
+        _delay_ms(25);
         this->off();
         this->getRegister()->shiftOut();
-        _delay_ms(50);
+        _delay_ms(25);
     }
 
     Register* Word::getRegister() {

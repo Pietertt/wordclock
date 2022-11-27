@@ -2,6 +2,7 @@
 
 #define F_CPU 16000000
 #define BLINK_DELAY_MS 1000
+#define AMOUNT_OF_WORDS 21
 
 #define uint8_t byte
 
