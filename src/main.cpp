@@ -1,4 +1,4 @@
-#include "include/precomp.h"
+#include "../include/precomp.h"
 
 extern "C" void __cxa_pure_virtual() { while (1); }
 
@@ -10,11 +10,20 @@ void operator delete(void* obj) {
     free(obj);
 }
 
+// byte spi_transfer(byte data) {
+//     SPDR = data;
+//     while (!(SPSR & (1<<SPIF))) {
+
+//     }
+//     return SPDR;
+// }
+
 int main () {
+    // SPI.begin();
     Wordclock::Time* time = new Wordclock::Time();
     time->setSeconds(0);
-    time->setMinutes(28);
-    time->setHour(22);
+    time->setMinutes(55);
+    time->setHour(21);
 
     Wordclock::Wordclock* clock = new Wordclock::Wordclock();
     clock->setup();

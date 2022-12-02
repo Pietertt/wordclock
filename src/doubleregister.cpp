@@ -1,4 +1,4 @@
-#include "include/precomp.h"
+#include "../include/precomp.h"
 
 namespace Wordclock {
 

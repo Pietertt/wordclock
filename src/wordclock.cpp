@@ -1,4 +1,4 @@
-#include "include/precomp.h"
+#include "../include/precomp.h"
 
 namespace Wordclock {
     Wordclock::Wordclock() {
@@ -103,53 +103,11 @@ namespace Wordclock {
     }
 
     void Wordclock::blink() {
-        this->HET->on();
-        this->IS->on();
-        this->VIJF->on();
-        this->TIEN->on();
-        this->KWART->on();
-        this->OVER->on();
-        this->VOOR->on();
-        this->ELF->on();
-        this->HALF->on();
-        this->TWEEDE_VIJF->on();      
-        this->TWEE->on();
-        this->EEN->on();
-        this->VIER->on();
-        this->TWAALF->on();
-        this->TWEEDE_TIEN->on();
-        this->DRIE->on();
-        this->NEGEN->on();
-        this->ACHT->on();
-        this->ZES->on();
-        this->ZEVEN->on();
-        this->UUR->on();
-
+        this->allOn();
         this->commit();
         _delay_ms(200);
 
-        this->HET->off();
-        this->IS->off();
-        this->VIJF->off();
-        this->TIEN->off();
-        this->KWART->off();
-        this->OVER->off();
-        this->VOOR->off();
-        this->ELF->off();
-        this->HALF->off();
-        this->TWEEDE_VIJF->off();      
-        this->TWEE->off();
-        this->EEN->off();
-        this->VIER->off();
-        this->TWAALF->off();
-        this->TWEEDE_TIEN->off();
-        this->DRIE->off();
-        this->NEGEN->off();
-        this->ACHT->off();
-        this->ZES->off();
-        this->ZEVEN->off();
-        this->UUR->off();
-
+        this->allOff();
         this->commit();
         _delay_ms(200);
     }
@@ -258,6 +216,7 @@ namespace Wordclock {
             case 10:
             case 22:
                 this->TWEEDE_TIEN->on();
+                break;
             case 11:
             case 23:
                 this->ELF->on();
@@ -273,7 +232,7 @@ namespace Wordclock {
     }
 
     void Wordclock::commit() {
-        this->a->shiftOut();
+        // this->a->shiftOut();
         this->b->shiftOut();
         this->c->shiftOut();
         this->d->shiftOut();

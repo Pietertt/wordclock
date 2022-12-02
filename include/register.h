@@ -19,6 +19,8 @@ namespace Wordclock {
 
             virtual void shiftOut() = 0;
 
+            byte copy;
+
         private:
             int clockPin;
             int latchPin;

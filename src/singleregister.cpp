@@ -1,4 +1,4 @@
-#include "include/precomp.h"
+#include "../include/precomp.h"
 
 namespace Wordclock {
     SingleRegister::SingleRegister(int clock, int latch, int data, volatile uint8_t* reg) {
