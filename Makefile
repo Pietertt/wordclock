@@ -1,14 +1,20 @@
 NAME			:= main.ccp
 DEVICE			:= atmega328p
-PORT			:= /dev/tty.usbmodem2201
+PORT			:= $(shell ls /dev/tty.* | grep 'usbmodemF')
 BAUD			:= 115200
 OUTPUT			:= bin/main.hex
 BIN				:= bin/main.bin
 SRC				:= src/
-CONTAINER_ID 	:= bc0fa43dc0e3
+CONTAINER_ID 	:= $(shell docker container ls  | grep 'wordclock' | awk '{print $$1}')
+CORE			:= /var/folders/jb/tmjxrj3s4jd3cfj0ddpxv16w0000gn/T/arduino_build_434821/../arduino_cache_79556/core/core_arduino_avr_uno_bac8666f4d6c6508c6dcfcc7c3ff0387.a
+ARDUINO			:= /private/var/folders/jb/tmjxrj3s4jd3cfj0ddpxv16w0000gn/T/AppTranslocation/ECDF1C47-3B39-4741-ABFE-C60D3A03AA5F/d/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino
+STANDARD		:= /private/var/folders/jb/tmjxrj3s4jd3cfj0ddpxv16w0000gn/T/AppTranslocation/ECDF1C47-3B39-4741-ABFE-C60D3A03AA5F/d/Arduino.app/Contents/Java/hardware/arduino/avr/variants/standard
+SOURCE			:= /private/var/folders/jb/tmjxrj3s4jd3cfj0ddpxv16w0000gn/T/AppTranslocation/ECDF1C47-3B39-4741-ABFE-C60D3A03AA5F/d/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/SPI/src
+SPI				:= /var/folders/jb/tmjxrj3s4jd3cfj0ddpxv16w0000gn/T/arduino_build_434821/libraries/SPI/SPI.cpp.o
+COMPILER		:= /private/var/folders/jb/tmjxrj3s4jd3cfj0ddpxv16w0000gn/T/AppTranslocation/ECDF1C47-3B39-4741-ABFE-C60D3A03AA5F/d/Arduino.app/Contents/Java/hardware/tools/avr/bin/avr-g++
 
 compile:
-	@docker exec -it $(CONTAINER_ID) avr-gcc -Wall -g -Os -mmcu=atmega328p -o $(BIN) $(wildcard src/*.cpp) -I include
+	@$(COMPILER) -Wall -g -Os -mmcu=atmega328p $(wildcard src/*.cpp) $(SPI) $(CORE) -o $(BIN) -I include -I$(ARDUINO) -I$(SOURCE) -Iinclude -I$(STANDARD)
 	@docker exec -it $(CONTAINER_ID) avr-objcopy -j .text -j .data -O ihex $(BIN) $(OUTPUT)
 
 flash:

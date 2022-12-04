@@ -18,6 +18,9 @@ namespace Wordclock {
             void decide_time(Time* time);
             void blink();
             void commit();
+            void sleep(float milliseconds);
+
+            Time* time;
 
         private:
             Register* a;
@@ -48,6 +51,11 @@ namespace Wordclock {
             Word* UUR;
             
             Word* words[AMOUNT_OF_WORDS];
+
+            constexpr static int sleepA = (100 - DUTY_CYCLE_LOW) * 100;
+            constexpr static int awakeA = DUTY_CYCLE_LOW * 100;
+            constexpr static int sleepB = (100 - DUTY_CYCLE_HIGH) * 100;
+            constexpr static int awakeB = DUTY_CYCLE_HIGH * 100;
 
         protected:
 

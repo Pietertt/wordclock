@@ -12,23 +12,25 @@ namespace Wordclock {
             int getLatchPin();
             int getDataPin();
 
-            byte getData();
+            uint8_t getData();
             void setData(bool data, int position);
-            void setData(byte data);
+            void setData(uint8_t data);
             void toggleData(int position);
+            uint8_t getCopyData();
+            void setCopyData(bool data, int position);
+            void setCopyData(uint8_t copyData);
 
             virtual void shiftOut() = 0;
-
-            byte copy;
 
         private:
             int clockPin;
             int latchPin;
             int dataPin;
 
-            byte data;
+            uint8_t data;
+            uint8_t copyData;
 
         protected:
-        
+
     };
 }

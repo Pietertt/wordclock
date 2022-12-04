@@ -9,6 +9,7 @@ namespace Wordclock {
         this->setClockPin(clockPin);
         this->setLatchPin(latchPin);
         this->setDataPin(dataPin);
+        this->setData(0b00000000);
     }
 
     void DoubleRegister::setDataRegister(Register* reg) {
@@ -36,6 +37,10 @@ namespace Wordclock {
     }
 
     void DoubleRegister::shiftOut() {
+        // if (this->getCopyData() == this->getData()) {
+        //     // return; // misschien sws een return voor snelheids controle
+        // }
+
         this->getLatchRegister()->setData(0, this->getLatchPin());
         this->getLatchRegister()->shiftOut();
 

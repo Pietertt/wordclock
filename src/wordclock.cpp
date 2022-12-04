@@ -5,15 +5,14 @@ namespace Wordclock {
 
     }
 
-    void Wordclock::setup() {
-        DDRB |= 0B111111;
-        DDRC |= 0B111111;
-        DDRD |= 0B11111111;
-
+    void Wordclock::setup() {        	
         this->a = new SingleRegister(2, 1, 0, &PORTC);
         this->b = new DoubleRegister(this->a, this->a, this->a, 0, 1, 2);
         this->c = new DoubleRegister(this->b, this->a, this->a, 0, 3, 4);
         this->d = new DoubleRegister(this->a, this->a, this->a, 5, 6, 7);
+
+        DDRC |= (0b1 << this->a->getLatchPin());
+	    SPI.begin();
 
         this->a->setData(0b00000000);
         this->b->setData(0b00000000);
@@ -232,9 +231,41 @@ namespace Wordclock {
     }
 
     void Wordclock::commit() {
-        // this->a->shiftOut();
         this->b->shiftOut();
         this->c->shiftOut();
         this->d->shiftOut();
+    }
+
+    void Wordclock::sleep(float milliseconds) {
+        int times = milliseconds / 10;
+        const bool lowPower = (this->time->getHour() <= 9 || this->time->getHour() >= 16) ? true : false;
+
+        uint8_t copyB = b->getCopyData();
+        uint8_t copyC = c->getCopyData();
+        uint8_t copyD = d->getCopyData();
+
+        for (int i = 0; i < times; i++) {
+            b->setData(copyB);
+            c->setData(copyC);
+            d->setData(copyD);
+            this->commit();
+            
+            if (lowPower) {
+                _delay_us(this->awakeA);
+            } else {
+                _delay_us(this->awakeB);
+            }
+
+            b->setData(0b00000000);
+            c->setData(0b00000000);
+            d->setData(0b00000000);
+            this->commit();
+
+            if (lowPower) {
+                _delay_us(this->sleepA);
+            } else {
+                _delay_us(this->sleepB);
+            }
+        }
     }
 }

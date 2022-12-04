@@ -10,24 +10,17 @@ void operator delete(void* obj) {
     free(obj);
 }
 
-// byte spi_transfer(byte data) {
-//     SPDR = data;
-//     while (!(SPSR & (1<<SPIF))) {
-
-//     }
-//     return SPDR;
-// }
-
 int main () {
-    // SPI.begin();
     Wordclock::Time* time = new Wordclock::Time();
     time->setSeconds(0);
-    time->setMinutes(55);
-    time->setHour(21);
+    time->setMinutes(21);
+    time->setHour(20);
 
     Wordclock::Wordclock* clock = new Wordclock::Wordclock();
+    clock->time = time;
     clock->setup();
-    clock->test();
+    
+    // clock->test();
 
     int hour = time->getHour();
     int minutes = time->getMinutes();
@@ -37,7 +30,6 @@ int main () {
     clock->commit();
 
     while (true) {
-        
         if (minutes != time->getMinutes() || hour != time->getHour()) {
             clock->allOff();
             clock->decide_time(time);
@@ -46,8 +38,8 @@ int main () {
             minutes = time->getMinutes();
         }
 
-        _delay_ms(1000);
         time->tick();
+        clock->sleep(575);
     }
 
     return 0;

@@ -10,13 +10,13 @@ namespace Wordclock {
             SingleRegister(int clock, int latch, int data, volatile uint8_t* reg);
             SingleRegister();
 
-            void setRegister(volatile byte* reg);
-            volatile byte* getRegister();
+            void setRegister(volatile uint8_t* reg);
+            volatile uint8_t* getRegister();
 
             virtual void shiftOut();
 
         private:
-            volatile byte* reg;
+            volatile uint8_t* reg;
 
         protected:
         

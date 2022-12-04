@@ -10,10 +10,12 @@ namespace Wordclock {
 
     void Word::on() {
         this->getRegister()->setData(true, this->getPlace());
+        this->getRegister()->setCopyData(true, this->getPlace());
     }
 
     void Word::off() {
         this->getRegister()->setData(false, this->getPlace());
+        this->getRegister()->setCopyData(false, this->getPlace());
     }
 
     void Word::toggle() {
