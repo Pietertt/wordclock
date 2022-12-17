@@ -21,12 +21,23 @@ namespace Wordclock {
     }
 
     void SingleRegister::shiftOut() {
-        PORTC &= ~(0b1 << this->getLatchPin());
+        // PORTC &= ~(0b1 << this->getLatchPin());
 
-        SPI.beginTransaction(SPISettings(16000000, MSBFIRST, SPI_MODE0));
-        SPI.transfer(this->getData());
-        SPI.endTransaction();
+        // SPI.beginTransaction(SPISettings(16000000, MSBFIRST, SPI_MODE0));
+        // SPI.transfer(this->getData());
+        // SPI.endTransaction();
 
-        PORTC |= (0b1 << this->getLatchPin());
+        // PORTC |= (0b1 << this->getLatchPin());
+
+        *this->getRegister() &= ~(0b1 << this->getLatchPin());
+
+        for (int i = 0; i < 8; i++)  {
+             *this->getRegister() ^= (-(!!(this->getData() & (1 << (7 - i)))) ^ *this->getRegister()) & (1 << this->getDataPin());
+             *this->getRegister() |= (0b1 << this->getClockPin());
+             *this->getRegister() &= ~(0b1 << this->getClockPin());
+         }
+
+         *this->getRegister() |= (0b1 << this->getLatchPin());
+
     }
 }

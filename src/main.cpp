@@ -11,35 +11,52 @@ void operator delete(void* obj) {
 }
 
 int main () {
-    Wordclock::Time* time = new Wordclock::Time();
-    time->setSeconds(0);
-    time->setMinutes(21);
-    time->setHour(20);
+    Serial.begin(9600);
 
     Wordclock::Wordclock* clock = new Wordclock::Wordclock();
-    clock->time = time;
     clock->setup();
-    
-    // clock->test();
+    clock->test();
 
-    int hour = time->getHour();
-    int minutes = time->getMinutes();
+    int hour = clock->getHour();
+    int minutes = clock->getMinutes();
 
     clock->allOff();
-    clock->decide_time(time);
+    clock->decide_time();
     clock->commit();
 
     while (true) {
-        if (minutes != time->getMinutes() || hour != time->getHour()) {
+        if (minutes != clock->getMinutes() || hour != clock->getHour()) {
             clock->allOff();
-            clock->decide_time(time);
+            clock->decide_time();
             clock->commit();
-            hour = time->getHour();
-            minutes = time->getMinutes();
+            hour = clock->getHour();
+            minutes = clock->getMinutes();
         }
 
-        time->tick();
-        clock->sleep(575);
+        int randomNumber = rand() % ((100 + 1) - 0) + 0;
+        int counter = 0;
+
+        if (randomNumber == 1) {
+            for (int i = 0; i < 50; i++) {
+                clock->random();
+                clock->commit();
+
+                if (counter == 10) {
+                    clock->tick();
+                    counter = 0;
+                }
+
+                _delay_ms(100);
+                counter++;
+            }
+
+            clock->allOff();
+            clock->decide_time();
+            clock->commit();
+        }
+
+        clock->tick();
+        _delay_ms(1000);
     }
 
     return 0;

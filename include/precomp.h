@@ -11,12 +11,17 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
 #include <arduino.h>
 #include <SPI.h>
+#include <ThreeWire.h>
+#include <RtcDS1302.h>
 
-#include "time.h"
 #include "wordclock.h"
 #include "register.h"
 #include "singleregister.h"
 #include "doubleregister.h"
 #include "word.h"
+#include "RTC.h"

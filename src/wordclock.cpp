@@ -5,14 +5,36 @@ namespace Wordclock {
 
     }
 
-    void Wordclock::setup() {        	
-        this->a = new SingleRegister(2, 1, 0, &PORTC);
+    void Wordclock::setup() {
+        this->rtc = new RTC(5, 4, 2);
+        // RTC rtc(5, 4, 2);
+        this->rtc->setDS1302Time(
+            10,
+            6,
+            17,
+            6,
+            17,
+            12,
+            2022
+        );
+        this->rtc->updateTime();
+
+        this->setHour(this->rtc->hours);
+        this->setMinutes(this->rtc->minutes);
+        this->setSeconds(this->rtc->seconds);
+
+        srand(time(NULL));
+
+        this->a = new SingleRegister(3, 2, 0, &PORTC);
         this->b = new DoubleRegister(this->a, this->a, this->a, 0, 1, 2);
         this->c = new DoubleRegister(this->b, this->a, this->a, 0, 3, 4);
         this->d = new DoubleRegister(this->a, this->a, this->a, 5, 6, 7);
 
         DDRC |= (0b1 << this->a->getLatchPin());
-	    SPI.begin();
+        DDRC |= (0b1 << this->a->getDataPin());
+        DDRC |= (0b1 << this->a->getClockPin());
+
+	    // SPI.begin();
 
         this->a->setData(0b00000000);
         this->b->setData(0b00000000);
@@ -65,7 +87,7 @@ namespace Wordclock {
         this->words[6] = this->VOOR;
         this->words[7] = this->ELF;
         this->words[8] = this->HALF;
-        this->words[9] = this->TWEEDE_VIJF;     
+        this->words[9] = this->TWEEDE_VIJF;
         this->words[10] = this->TWEE;
         this->words[11] = this->EEN;
         this->words[12] = this->VIER;
@@ -111,9 +133,9 @@ namespace Wordclock {
         _delay_ms(200);
     }
 
-    void Wordclock::decide_time(Time* time) {
-        int minutes = time->getMinutes();
-        int hour = time->getHour();
+    void Wordclock::decide_time() {
+        int minutes = this->getMinutes();
+        int hour = this->getHour();
 
         if (minutes >= 18) {
             hour++;
@@ -238,7 +260,7 @@ namespace Wordclock {
 
     void Wordclock::sleep(float milliseconds) {
         int times = milliseconds / 10;
-        const bool lowPower = (this->time->getHour() <= 9 || this->time->getHour() >= 16) ? true : false;
+        const bool lowPower = (this->getHour() <= 9 || this->getHour() >= 16) ? true : false;
 
         uint8_t copyB = b->getCopyData();
         uint8_t copyC = c->getCopyData();
@@ -266,6 +288,79 @@ namespace Wordclock {
             } else {
                 _delay_us(this->sleepB);
             }
+        }
+    }
+
+    int Wordclock::getMinutes() {
+        this->rtc->updateTime();
+        this->setMinutes(this->rtc->minutes);
+        return this->rtc->minutes;
+    }
+
+    int Wordclock::getSeconds() {
+        this->rtc->updateTime();
+        this->setSeconds(this->rtc->seconds);
+        return this->rtc->seconds;
+    }
+
+    void Wordclock::setSeconds(int seconds) {
+        this->seconds = seconds;
+    }
+
+    void Wordclock::setMinutes(int minutes) {
+        this->minutes = minutes;
+    }
+
+    int Wordclock::getHour() {
+        this->rtc->updateTime();
+        this->setHour(this->rtc->hours);
+        return this->rtc->hours;
+    }
+
+    void Wordclock::setHour(int hour) {
+        this->hour = hour;
+    }
+
+    void Wordclock::tick() {
+        this->setSeconds(this->getSeconds() + 1);
+
+        if (this->getHour() == 24) {
+            this->setHour(0);
+        }
+
+        if (this->getMinutes() == 60) {
+            this->setHour(this->getHour() + 1);
+            this->setMinutes(0);
+        }
+
+        if (this->getSeconds() == 60) {
+            this->setMinutes(this->getMinutes() + 1);
+            this->setSeconds(0);
+        }
+    }
+
+    void Wordclock::random() {
+        this->allOff();
+
+        int usedNumbers[5];
+        int randomNumber;
+
+        for (int i = 0; i < 5; i++) {
+            while (true) {
+                bool stop = true;
+                randomNumber = rand() % ((20 + 1) - 0) + 0;
+                for (int j = 0; j < 5; j++) {
+                    if (randomNumber == usedNumbers[j]) {
+                        stop = false;
+                    }
+                }
+
+                if (stop) {
+                    break;
+                }
+            }
+            this->words[randomNumber]->on();
+            usedNumbers[i] = randomNumber;
         }
     }
 }
