@@ -1,7 +1,8 @@
 #pragma once
 
 namespace Wordclock {
-    class RTC  {
+
+    class RTC {
 
         public:
             RTC(uint8_t inSCLK, uint8_t inIO, uint8_t inC_E);

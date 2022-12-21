@@ -6,24 +6,24 @@ namespace Wordclock {
     }
 
     void Wordclock::setup() {
-        this->rtc = new RTC(5, 4, 2);
-        // RTC rtc(5, 4, 2);
-        this->rtc->setDS1302Time(
-            10,
-            6,
-            17,
-            6,
-            17,
-            12,
-            2022
-        );
-        this->rtc->updateTime();
+        // this->rtc = new RTC(5, 4, 2);
+        // // RTC rtc(5, 4, 2);
+        // this->rtc->setDS1302Time(
+        //     10,
+        //     6,
+        //     17,
+        //     6,
+        //     17,
+        //     12,
+        //     2022
+        // );
+        // this->rtc->updateTime();
 
-        this->setHour(this->rtc->hours);
-        this->setMinutes(this->rtc->minutes);
-        this->setSeconds(this->rtc->seconds);
+        // this->setHour(this->rtc->hours);
+        // this->setMinutes(this->rtc->minutes);
+        // this->setSeconds(this->rtc->seconds);
 
-        srand(time(NULL));
+        // srand(time(NULL));
 
         this->a = new SingleRegister(3, 2, 0, &PORTC);
         this->b = new DoubleRegister(this->a, this->a, this->a, 0, 1, 2);
@@ -292,15 +292,15 @@ namespace Wordclock {
     }
 
     int Wordclock::getMinutes() {
-        this->rtc->updateTime();
-        this->setMinutes(this->rtc->minutes);
-        return this->rtc->minutes;
+        // this->rtc->updateTime();
+        // this->setMinutes(this->rtc->minutes);
+        return this->minutes;
     }
 
     int Wordclock::getSeconds() {
-        this->rtc->updateTime();
-        this->setSeconds(this->rtc->seconds);
-        return this->rtc->seconds;
+        // this->rtc->updateTime();
+        // this->setSeconds(this->rtc->seconds);
+        return this->seconds;
     }
 
     void Wordclock::setSeconds(int seconds) {
@@ -312,9 +312,9 @@ namespace Wordclock {
     }
 
     int Wordclock::getHour() {
-        this->rtc->updateTime();
-        this->setHour(this->rtc->hours);
-        return this->rtc->hours;
+        // this->rtc->updateTime();
+        // this->setHour(this->rtc->hours);
+        return this->hour;
     }
 
     void Wordclock::setHour(int hour) {

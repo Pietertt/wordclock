@@ -12,9 +12,9 @@
 #define DS1302_SCLK_PIN             SCLK
 #define DS1302_IO_PIN               IO
 #define DS1302_CE_PIN               C_E
-#define bcd2bin                     (h,l)    (((h)*10) + (l))
-#define bin2bcd_h                   (x)   ((x)/10)
-#define bin2bcd_l                   (x)    ((x)%10)
+// #define bcd2bin                     (h,l)    (((h)*10) + (l))
+// #define bin2bcd_h                   (x)   ((x)/10)
+// #define bin2bcd_l                   (x)    ((x)%10)
 #define DS1302_SECONDS              0x80
 #define DS1302_MINUTES              0x82
 #define DS1302_HOURS                0x84
@@ -59,11 +59,10 @@
 #include <time.h>
 #include <string.h>
 #include <stddef.h>
+#include <stdint.h>
 
-#include <arduino.h>
-#include <SPI.h>
-#include <ThreeWire.h>
-#include <RtcDS1302.h>
+// #include <arduino.h>
+// #include <SPI.h>
 
 #include "wordclock.h"
 #include "register.h"

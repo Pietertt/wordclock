@@ -1,4 +1,4 @@
-#include "RTC.h"                                                                              //|
+#include "../include/precomp.h"                                                                              //|
 
 namespace Wordclock {
     RTC::RTC(uint8_t inSCLK, uint8_t inIO, uint8_t inC_E)   {                          //|    |
@@ -78,7 +78,7 @@ uint8_t RTC::DS1302_read(int address)  {                                        
   uint8_t data;                                                                                          //|    |
                                                                                                          //|    |
   // set lowest bit (read bit) in address                                                                //|    |
-  bitSet( address, DS1302_READBIT);                                                                      //|    |
+//   bitSet( address, DS1302_READBIT);                                                                      //|    |
                                                                                                          //|    |
   _DS1302_start();                                                                                       //|    |
   // the I/O-line is released for the data                                                               //|    |
@@ -91,7 +91,7 @@ uint8_t RTC::DS1302_read(int address)  {                                        
 
 void RTC::DS1302_write( int address, uint8_t data)  {                                         //|    |
   // clear lowest bit (read bit) in address                                                              //|    |
-  bitClear( address, DS1302_READBIT);                                                                    //|    |
+//   bitClear( address, DS1302_READBIT);                                                                    //|    |
                                                                                                          //|    |
   _DS1302_start();                                                                                       //|    |
                                                                                                          //|    |
@@ -104,23 +104,23 @@ void RTC::DS1302_write( int address, uint8_t data)  {                           
 }                                     //|    |
 
 void RTC::_DS1302_start( void )  {                                                            //|    |
-  digitalWrite( DS1302_CE_PIN, LOW );                 // default, not enabled                            //|    |
-  pinMode( DS1302_CE_PIN, OUTPUT );                                                                      //|    |
-                                                                                                         //|    |
-  digitalWrite( DS1302_SCLK_PIN, LOW );               // default, clock low                              //|    |
-  pinMode( DS1302_SCLK_PIN, OUTPUT );                                                                    //|    |
-                                                                                                         //|    |
-  pinMode( DS1302_IO_PIN, OUTPUT );                                                                      //|    |
-                                                                                                         //|    |
-  digitalWrite( DS1302_CE_PIN, HIGH );                // start the session                               //|    |
-  delayMicroseconds( 4 );                             // tCC = 4us                                       //|    |
+//   digitalWrite( DS1302_CE_PIN, LOW );                 // default, not enabled                            //|    |
+//   pinMode( DS1302_CE_PIN, OUTPUT );                                                                      //|    |
+//                                                                                                          //|    |
+//   digitalWrite( DS1302_SCLK_PIN, LOW );               // default, clock low                              //|    |
+//   pinMode( DS1302_SCLK_PIN, OUTPUT );                                                                    //|    |
+//                                                                                                          //|    |
+//   pinMode( DS1302_IO_PIN, OUTPUT );                                                                      //|    |
+//                                                                                                          //|    |
+//   digitalWrite( DS1302_CE_PIN, HIGH );                // start the session                               //|    |
+//   delayMicroseconds( 4 );                             // tCC = 4us                                       //|    |
 }                                                        //|    |
 
 void RTC::_DS1302_stop( void )  {                                                             //|    |
   // Set CE low                                                                                          //|    |
-  digitalWrite( DS1302_CE_PIN, LOW );                                                                    //|    |
-                                                                                                         //|    |
-  delayMicroseconds( 4 );                               // tCWH = 4us                                    //|    |
+//   digitalWrite( DS1302_CE_PIN, LOW );                                                                    //|    |
+//                                                                                                          //|    |
+//   delayMicroseconds( 4 );                               // tCWH = 4us                                    //|    |
 }                                                         //|    |
 
 uint8_t RTC::_DS1302_toggleread( void )  {                                                    //|    |
@@ -130,15 +130,15 @@ uint8_t RTC::_DS1302_toggleread( void )  {                                      
 // Issue a clock pulse for the next databit.  If the 'togglewrite' function was used before this         //|    |
 //  function, the SCLK is already high.                                                                  //|    |
   for( i = 0; i <= 7; i++ )  {                                                                           //|    |
-    digitalWrite( DS1302_SCLK_PIN, HIGH );                                                               //|    |
-    delayMicroseconds( 1) ;                                                                              //|    |
-                                                                                                         //|    |
-    // Clock down, data is ready after some time.                                                        //|    |
-    digitalWrite( DS1302_SCLK_PIN, LOW );                                                                //|    |
-    delayMicroseconds( 1 );                                  // tCL=1000ns, tCDD=800ns                   //|    |
-                                                                                                         //|    |
-    // read bit, and set it in place in 'data' variable                                                  //|    |
-    bitWrite( data, i, digitalRead( DS1302_IO_PIN ) );                                                   //|    |                                                                                                 //|    |
+    // digitalWrite( DS1302_SCLK_PIN, HIGH );                                                               //|    |
+    // delayMicroseconds( 1) ;                                                                              //|    |
+    //                                                                                                      //|    |
+    // // Clock down, data is ready after some time.                                                        //|    |
+    // digitalWrite( DS1302_SCLK_PIN, LOW );                                                                //|    |
+    // delayMicroseconds( 1 );                                  // tCL=1000ns, tCDD=800ns                   //|    |
+    //                                                                                                      //|    |
+    // // read bit, and set it in place in 'data' variable                                                  //|    |
+    // bitWrite( data, i, digitalRead( DS1302_IO_PIN ) );                                                   //|    |                                                                                                 //|    |
   }                                                                                                      //|    |
   return( data );                                                                                        //|    |
 }                                                //|    |
@@ -148,21 +148,21 @@ void RTC::_DS1302_togglewrite( uint8_t data, uint8_t release)  {                
                                                                                                          //|    |
   for( i = 0; i <= 7; i++ )  {                                                                           //|    |
     // set a bit of the data on the I/O-line                                                             //|    |
-    digitalWrite( DS1302_IO_PIN, bitRead(data, i) );                                                     //|    |
-    delayMicroseconds( 1 );                                     // tDC = 200ns                           //|    |
-                                                                                                         //|    |
-    // clock up, data is read by DS1302                                                                  //|    |
-    digitalWrite( DS1302_SCLK_PIN, HIGH );                                                               //|    |
-    delayMicroseconds( 1 );                                     // tCH = 1000ns, tCDH = 800ns            //|    |
+    // digitalWrite( DS1302_IO_PIN, bitRead(data, i) );                                                     //|    |
+    // delayMicroseconds( 1 );                                     // tDC = 200ns                           //|    |
+    //                                                                                                      //|    |
+    // // clock up, data is read by DS1302                                                                  //|    |
+    // digitalWrite( DS1302_SCLK_PIN, HIGH );                                                               //|    |
+    // delayMicroseconds( 1 );                                     // tCH = 1000ns, tCDH = 800ns            //|    |
                                                                                                          //|    |
 //  If this write is followed by a read, the I/O-line should be released after the last bit, before the  //|    |
 //  clock line is made low.  This is according the datasheet.  I have seen other programs that don't     //|    |
 //  release the I/O-line at this moment, and that could cause a shortcut spike on the I/O-line.          //|    |
     if( release && i == 7 )  {                                                                           //|    |
-      pinMode( DS1302_IO_PIN, INPUT );                                                                   //|    |
+    //   pinMode( DS1302_IO_PIN, INPUT );                                                                   //|    |
     }  else  {                                                                                           //|    |
-      digitalWrite( DS1302_SCLK_PIN, LOW );                                                              //|    |
-      delayMicroseconds( 1 );                                   // tCL=1000ns, tCDD=800ns                //|    |
+    //   digitalWrite( DS1302_SCLK_PIN, LOW );                                                              //|    |
+    //   delayMicroseconds( 1 );                                   // tCL=1000ns, tCDD=800ns                //|    |
     }                                                                                                    //|    |
   }                                                                                                      //|    |
 }                          //|    |
@@ -182,23 +182,23 @@ void RTC::setDS1302Time(uint8_t seconds, uint8_t minutes, uint8_t hours, uint8_t
 //++++++++++++++++++++ This will fill the output array of the rtc object with ZEROs +++++++++++++++++++++//|    |
   memset ((char *) &rtc, 0, sizeof(rtc));                                                                //|    |
                                                                                                          //|    |
-//+++++++++++++++++++ This contains the conversion to BCD, and assigns to the elements ++++++++++++++++++//|    |
-  rtc.Seconds         = bin2bcd_l( seconds);                                                             //|    |
-  rtc.Seconds10       = bin2bcd_h( seconds);                                                             //|    |
-  rtc.CH              = 0;                                       // 1 for Clock Halt, 0 to run           //|    |
-  rtc.Minutes         = bin2bcd_l( minutes);                                                             //|    |
-  rtc.Minutes10       = bin2bcd_h( minutes);                                                             //|    |
-  rtc.h24.Hour        = bin2bcd_l( hours);                                                               //|    |
-  rtc.h24.Hour10      = bin2bcd_h( hours);                                                               //|    |
-  rtc.h24.hour_12_24  = 0;                                       // 0 for 24 hour format                 //|    |
-  rtc.Date            = bin2bcd_l( dayofmonth);                                                          //|    |
-  rtc.Date10          = bin2bcd_h( dayofmonth);                                                          //|    |
-  rtc.Month           = bin2bcd_l( month);                                                               //|    |
-  rtc.Month10         = bin2bcd_h( month);                                                               //|    |
-  rtc.Day             = dayofweek;                                                                       //|    |
-  rtc.Year            = bin2bcd_l( year - 2000);                                                         //|    |
-  rtc.Year10          = bin2bcd_h( year - 2000);                                                         //|    |
-  rtc.WP              = 0;                                                                               //|    |
+// //+++++++++++++++++++ This contains the conversion to BCD, and assigns to the elements ++++++++++++++++++//|    |
+//   rtc.Seconds         = bin2bcd_l( seconds);                                                             //|    |
+//   rtc.Seconds10       = bin2bcd_h( seconds);                                                             //|    |
+//   rtc.CH              = 0;                                       // 1 for Clock Halt, 0 to run           //|    |
+//   rtc.Minutes         = bin2bcd_l( minutes);                                                             //|    |
+//   rtc.Minutes10       = bin2bcd_h( minutes);                                                             //|    |
+//   rtc.h24.Hour        = bin2bcd_l( hours);                                                               //|    |
+//   rtc.h24.Hour10      = bin2bcd_h( hours);                                                               //|    |
+//   rtc.h24.hour_12_24  = 0;                                       // 0 for 24 hour format                 //|    |
+//   rtc.Date            = bin2bcd_l( dayofmonth);                                                          //|    |
+//   rtc.Date10          = bin2bcd_h( dayofmonth);                                                          //|    |
+//   rtc.Month           = bin2bcd_l( month);                                                               //|    |
+//   rtc.Month10         = bin2bcd_h( month);                                                               //|    |
+//   rtc.Day             = dayofweek;                                                                       //|    |
+//   rtc.Year            = bin2bcd_l( year - 2000);                                                         //|    |
+//   rtc.Year10          = bin2bcd_h( year - 2000);                                                         //|    |
+//   rtc.WP              = 0;                                                                               //|    |
                                                                                                          //|    |
 //+++++++++++++++++++++++++++++++ Write all clock data at once (burst mode) +++++++++++++++++++++++++++++//|    |
   DS1302_clock_burst_write( (uint8_t *) &rtc);                                                           //|    |

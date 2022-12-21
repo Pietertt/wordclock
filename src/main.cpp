@@ -11,11 +11,18 @@ void operator delete(void* obj) {
 }
 
 int main () {
-    Serial.begin(9600);
-
     Wordclock::Wordclock* clock = new Wordclock::Wordclock();
     clock->setup();
     clock->test();
+
+    char string[50] = __TIME__;
+
+    char* token = strtok(string, ":");
+    clock->setHour(atoi(token) + 1);
+    token = strtok(NULL, ":");
+    clock->setMinutes(atoi(token));
+    token = strtok(NULL, ":");
+    clock->setSeconds(atoi(token));
 
     int hour = clock->getHour();
     int minutes = clock->getMinutes();
@@ -33,11 +40,11 @@ int main () {
             minutes = clock->getMinutes();
         }
 
-        int randomNumber = rand() % ((100 + 1) - 0) + 0;
+        int randomNumber = rand() % ((500 + 1) - 0) + 0;
         int counter = 0;
 
         if (randomNumber == 1) {
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 100; i++) {
                 clock->random();
                 clock->commit();
 
